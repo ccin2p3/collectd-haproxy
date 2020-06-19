@@ -62,15 +62,15 @@ class HAProxySocket(object):
     ''' Send a single command to the socket and return a single response (raw string) '''
     s = self.connect()
     if not command.endswith('\n'): command += '\n'
-    s.send(command)
-    result = ''
-    buf = ''
+    s.send(bytes(command,'utf-8'))
+    result = b''
     buf = s.recv(RECV_SIZE)
     while buf:
       result += buf
       buf = s.recv(RECV_SIZE)
     s.close()
-    return result
+    result_string = result.decode()
+    return result_string
 
   def get_server_info(self):
     result = {}
